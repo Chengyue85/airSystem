@@ -57,9 +57,9 @@ public class AirLine extends HttpServlet {
                 json.append(ibegin);
                 json.append("\",\"iend\":\"");
                 json.append(iend);
-                json.append("\",\"imiddle\":");
+                json.append("\",\"imiddle\":\"");
                 json.append(imiddle);
-                json.append(",\"ischeduledgo\":\"");
+                json.append("\",\"ischeduledgo\":\"");
                 json.append(ischeduledgo);
                 json.append("\",\"iactualgo\":\"");
                 json.append(iactualgo);
