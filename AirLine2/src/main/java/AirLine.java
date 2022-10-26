@@ -24,7 +24,7 @@ public class AirLine extends HttpServlet {
             //注册驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
             //获取连接
-            conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/airline1?&useSSL=false&serverTimezone=UTC","root","Ziyue0821");
+            conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/airline?&useSSL=false&serverTimezone=UTC","root","Ziyue0821");
             //获取预编译的数据库操作对象
             String sqlStr = "select id,inum,icompany,ibegin,iend,imiddle,ischeduledgo,iactualgo,ischeduledarr,iactualarr,iterminal,igate,icheck,istatus from info";
             ps=conn.createStatement();
