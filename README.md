@@ -1,2 +1,2 @@
 # airline_display_system
-航班显示系统
+航班信息显示系统
