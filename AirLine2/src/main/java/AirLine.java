@@ -91,6 +91,20 @@ public class AirLine extends HttpServlet {
         out.print(jsonStr);
 
     }
+    
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //设置响应内容类型及字符集
+        response.setContentType("text/html;charset=UTF-8");
+        //获取响应流
+        PrintWriter out=response.getWriter();
+        //获取Ajax get请求提交的数据
+        String inum=request.getParameter("inum");
+        String ibeginplace=request.getParameter("ibeginplace");
+        String iarriveplace=request.getParameter("iarriveplace");
+        String iplangotime=request.getParameter("iplangotime");
+
+        out.print("inum"+inum+",begin="+ibeginplace+",arrive="+iarriveplace+",time="+iplangotime);
+    }
 
 }
 
