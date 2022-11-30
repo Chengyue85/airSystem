@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>改签</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--		<link href="css/bootstrap.min.css" rel="stylesheet">-->
+		<link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+		<style>
+			h2
+			{
+				text-align:center;
+			}
+			a{
+				text-decoration: none;
+				color:white;
+			}
+			a:hover{
+				color:white;
+			}
+			form
+			{
+				text-align:center;
+			}
+			input
+			{
+				width: 150px;
+			}
+			tbody
+			{
+				background: white;
+				opacity: 80%;
+			}
+			table th,tr{
+				text-align: center;
+				vertical-align: center;
+			}
+
+		</style>
+
+	</head>
+	<body background="img/2.jpg">
+
+		<h2 >改签航班</h2>
+		<div class="col-md-offset-1">
+			<button role="presentation" class='btn-block btn btn-primary '><a href="index.html"> 返回 </a></button>
+		</div>
+
+		<div id="planeInfo">
+			<table class="table table-bordered table-hover" >
+				<thead class="table-dark">
+				<tr>
+					<th>航班号</th>
+					<th>航班名称</th>
+					<th>起始地点</th>
+					<th>目的地</th>
+					<th>价格</th>
+					<th>剩余票数</th>
+					<th>起飞时间</th>
+					<th>服务</th>
+				</tr>
+				</thead>
+				<tbody id="planeRoute">
+				</tbody>
+			</table>
+		</div>
+
+
+
+
+	</body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+<script>
+$(function(){
+	var id = sessionStorage.getItem("id");
+	//alert(id);
+	
+	$.ajax({
+				async: false,
+				type: "GET",
+				url: "http://localhost:8080/order/change?id="+id,
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				//data:JSON.stringify(allData),
+				success:function(data){
+					if(data.status == 1){
+						var str = "";
+						$.each(data.list,function(i,n){
+							str += "<tr>";
+							str += "<td id = " + n.id + ">" + n.id + "</td>";
+							str += "<td>" + n.planeName + "</td>";
+							str += "<td>" + n.first + "</td>";
+							str += "<td>" + n.destination + "</td>";
+							str += "<td>" + n.money + "</td>";
+							str += "<td>" + n.number + "</td>";
+							str += "<td>" + n.time + "</td>";
+							str += "<td><button type='button' class='btn-block btn btn-primary ' onclick='change(" + n.id +
+								")'>确定改签</button></td>";
+							str += "</tr>";
+						
+						});
+						
+						$("#planeRoute").append(str)
+					}else{
+						alert(data.message);
+					}
+					
+				},
+				errot:function(data){
+					alert("请登录");
+					window.location.href = "http://localhost:8080/login.html";
+					return;
+				}
+				
+			})
+})	
+</script>
+
+<script type="application/javascript">
+	function change(id){
+		
+		var ansswer = confirm("是否确定改签？");
+		if(ansswer){
+			var orderId = sessionStorage.getItem("id");
+			$.ajax({
+				async: false,
+				type: "GET",
+				url: "http://localhost:8080/order/changeOrder?id="+id+"&orderId="+orderId,
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				//data:JSON.stringify(allData),
+				success:function(data){
+					if(data.status == 1){
+						alert(data.message);
+						window.location.href="http://localhost:8080/index.html";
+					}else{
+						alert(data.message);
+					}
+				},
+				errot:function(data){
+					alert("服务器繁忙，请稍后重试！")
+				}
+				
+			})
+		}else{
+			window.location.href="http://localhost:8080/change.html";
+		}
+	}
+</script>
+</html>

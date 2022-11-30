@@ -1,0 +1,128 @@
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<title>登录</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+
+	body{
+		background-image: url("img/plane.jpg");
+		/*background-image: linear-gradient(to right top, #3978e2, #b9d4ff);*/
+		/*opacity: 0.5;*/
+
+	}
+
+	.all{
+		margin-left: 450px;
+		padding: 40px;
+		padding-left: 50px;
+		width:400px;
+		margin-top: 50px;
+		/*border:1px black solid;*/
+		background-color: rgba(255, 255, 255, 0.85);
+	}
+	.form-control{
+		width:300px;
+	}
+	.btn{
+		width:80px;
+		display: inline-block;
+	}
+	.btn-primary{
+		margin-right: 50px;
+	}
+	.top{
+		margin-top: 50px;
+	}
+</style>
+<body background="img/background1.jpg">
+
+	<div align="center" class="top">
+		<font color="black" size="15">欢迎使用机票订购系统
+		</font>
+	</div>
+	<br>
+	<div class="all">
+	<div class="form-group" id="boxcenter">
+		<label for="username">用户名</label>
+		<input type="text" class="form-control" id="username" placeholder="username">
+	</div><br>
+<!--	class="form-group col-md-offset-1"-->
+	<div class="form-group" id="boxcenter">
+		<label for="password">密码</label>
+		<input type="password" class="form-control" id="password" placeholder="Password">
+		<input type="radio" value="0" id = "radio" name="radiobutton" checked="checked"/>用户登录
+		<input type="radio" value="1" id = "radio" name="radiobutton" />管理员登录
+	</div>
+<!--	-->
+	<div class="" id="boxcenter">
+		<button type="button" class="layui-btn layui-btn-radius layui-btn-normal btn-block btn btn-primary" onclick="login()">登录</button>
+		<a href="register.html" class="btn-block btn btn-success"> 注册</a>
+	</div>
+	</div>
+</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</body>
+
+<script type="text/javascript">
+	function login() {
+		<!--alert(1)-->	
+			var username = $("#username").val();
+			var password = $("#password").val();
+			var radio = $('input:radio[name="radiobutton"]:checked').val();
+			//alert(radio);
+			
+			if (username == "") {
+				alert("用户名不能为空");
+				return;
+			}
+			
+			if(password == ""){
+				alert("密码不能为空");
+				return ;
+			}
+			var allData = {
+					"username":username,
+					"password":password,
+					"admin":radio,
+					
+			}
+			
+			$.ajax({
+				async: false,
+				type:"POST",
+				url: "http://localhost:8080/user/login",
+				dataType:"json",
+				 contentType:"application/json;charset=utf-8",
+				data:JSON.stringify(allData),
+				success:function(data){
+					alert(data.message);
+					if(data.admin == 1 && data.status==1){
+						window.location.href = "http://localhost:8080/admin.html";
+					}else if(data.status == 1){
+						window.location.href = "http://localhost:8080/index.html";
+					}else{
+						window.location.href = "http://localhost:8080/login.html";
+					}
+					
+					return;
+				},
+				error: function(data) {
+					alert("请登录！");
+					return;
+				},
+			})
+	
+	}
+	
+</script>
+
+</html>
