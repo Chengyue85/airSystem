@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.plus.dao.PlaneDao">
+
+	<resultMap type="com.plus.po.Plane" id="BaseResultMap">
+		<id column="id" property="id" />
+		<result column="planeName" property="planeName" />
+		<result column="money" property="money" />
+		<result column="time" property="time" />
+		<result column="number" property="number" />
+		<result column="first" property="first" />
+		<result column="destination" property="destination" />
+	</resultMap>
+
+	<select id="selectAllPlane" resultMap="BaseResultMap">
+		select * from planes
+	</select>
+
+	<select id="selectPlaneById" parameterType="int" resultMap="BaseResultMap">
+		select * from planes where id = #{id}
+	</select>
+
+	<select id="selectPlaneByName" parameterType="String" resultMap="BaseResultMap">
+		select * from planes where planeName = #{planeName} and number > 0
+	</select>
+
+	<update id="updatePlaneDNumber" parameterType="int">
+		update planes set number = number - #{number} where id = #{planeId}
+	</update>
+
+	<update id="updatePlaneINumber" parameterType="int">
+		update planes set number = number + #{number} where id = #{planeId}
+	</update>
+
+	<insert id="insertPlane" parameterType="com.plus.po.Plane">
+		<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into planes(planeName,number,time,first,destination,money)
+		values(#{planeName},#{number},#{time},#{first},#{destination},#{money})
+	</insert>
+
+	<delete id="deletePlane" parameterType="int">
+		delete from planes where
+		id = #{id}
+	</delete>
+</mapper>
