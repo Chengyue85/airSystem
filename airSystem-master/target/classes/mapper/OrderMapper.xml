@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.plus.dao.OrderDao">
+
+	<resultMap type="com.plus.po.Order" id="BaseResultMap">
+		<id column="id" property="id" />
+		<result column="planeId" property="planeId" />
+		<result column="userid" property="userid" />
+		<result column="time" property="time" />
+	</resultMap>
+
+	<resultMap type="com.plus.vo.OrderVo" id="VoResultMap"
+		extends="BaseResultMap">
+		<association property="plane" javaType="com.plus.po.Plane">
+			<id column="p_id" property="id" />
+			<result column="p_planeName" property="planeName" />
+			<result column="p_money" property="money" />
+			<result column="p_time" property="time" />
+			<result column="p_number" property="number" />
+			<result column="p_first" property="first" />
+			<result column="p_destination" property="destination" />
+		</association>
+	</resultMap>
+
+
+
+	<insert id="insertOrder" parameterType="com.plus.po.Order">
+		insert into
+		`order`(planeId,userid,time)
+		values(#{planeId},#{userid},#{time})
+	</insert>
+
+	<select id="selectOrderByUserId" parameterType="int" resultMap="VoResultMap">
+		select o.*,p.id as p_id,p.planeName as p_planeName,p.money as p_money,
+		p.time as p_time , p.first as p_first,p.destination as
+		p_destination,p.number as p_number
+		from `order` o inner join planes p on o.planeId = p.id where
+		o.userid =
+		#{userid}
+	</select>
+	
+	<select id="selectOrderById" parameterType="int" resultMap="BaseResultMap">
+		select * from `order` where id = #{id}
+	</select>
+	
+	<select id="selectOrderByPlaneId" parameterType="int" resultMap="BaseResultMap">
+	 select * from `order` where planeId = #{planeId}
+	</select>
+	
+	<delete id="delectOrderById">
+		delete from `order` where id = #{id}
+	</delete>
+	
+	
+	<update id="updateOrder" parameterType="com.plus.po.Order">
+		update `order` set planeId=#{planeId},time=#{time} where id = #{id}
+	</update>
+
+
+</mapper>

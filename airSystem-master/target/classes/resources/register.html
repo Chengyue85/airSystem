@@ -1,0 +1,181 @@
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+	</head>
+<style>
+	.form-control{
+		width:300px;
+	}
+	.form-horizontal{
+		margin-left: 350px;
+	}
+</style>
+	<body background="img/plane.jpg">
+		<div align="center">
+			<font color="black" size="15">欢迎注册机票订购系统
+			</font>
+		</div>
+		<br>
+<!--		<div class=".text-center">-->
+<!--			<img src="img/plane.jpg" class="img-thumbnail img-responsive center-block" width="300" height="140">-->
+<!--		</div>-->
+
+
+		<div class="form-horizontal">
+
+			<div class="form-group">
+<!--				-->
+				<label for="name" class="col-sm-2 control-label">名字</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="name" placeholder="name">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="username" class="col-sm-2 control-label">用户名</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="username" placeholder="username">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="password" class="col-sm-2 control-label">密码</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" id="password" placeholder="Password">
+				</div><br><br><br>
+				<label for="password2" class="col-sm-2 control-label">请再次输入密码</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" id="password2" placeholder="Password">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="idNumber" class="col-sm-2 control-label">请输入身份证号</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="idNumber" placeholder="身份证号">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="phone" class="col-sm-2 control-label">请输入手机号码</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="phone" placeholder="手机号">
+				</div>
+			</div>
+
+			<center>
+				<div class="form-group">
+					<div class="col-sm-8">
+
+						<div class="btn-group btn-group-lg" role="group">
+							<button type="button" class="btn btn-default btn-block btn btn-info" onclick="register()">注册</button>
+						</div>
+
+					</div>
+				</div>
+		</div>
+
+		<span class="label label-info">
+			<a href="login.html">
+				<font size="3">我已有账号，现在去登录</font>
+			</a>
+		</span>
+		</center>
+	</body>
+
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function register() {
+			//alert(1);
+			var username = $("#username").val();
+			var password = $("#password").val();
+			var password2 = $("#password2").val();
+			var name = $("#name").val();
+			var phone = $("#phone").val();
+			var idNumber = $("#idNumber").val();
+
+			<!--正则校验-->
+			var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+			var reg2 = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+
+			if (name == "") {
+				alert("姓名不能为空");
+				return;
+			}
+
+			if (username == "") {
+				alert("用户名不能为空");
+				return;
+			}
+
+			if (username.length > 30) {
+				alert("用户名太长，请重试!,应该小于30字符");
+				return;
+			}
+			if (password == "") {
+				alert("密码不能为空");
+				return;
+			}
+
+			if (password.length > 30) {
+				alert("密码太长，请重试，应该小于30字符");
+				return;
+			}
+
+			if (password != password2) {
+				alert("两次密码输入不相等！");
+				return;
+			}
+
+
+			if (reg.test(idNumber) == false) {
+				alert("身份证输入不合法");
+				return;
+			}
+
+			if (reg2.test(phone) == false) {
+				alert("手机号输入不规范");
+				return;
+			}
+
+			var allData = {
+				"username": username,
+				"password": password,
+				"name": name,
+				"phone": phone,
+				"idNumber": idNumber,
+			}
+
+			$.ajax({
+				async: false,
+				type: "POST",
+				url: "http://localhost:8080/user/register",
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				data: JSON.stringify(allData),
+				success: function(data) {
+					alert(data.message);
+					window.location.href = "http://localhost:8080/login.html"
+					return;
+				},
+				error: function(data) {
+					alert(data.message);
+					window.location.href = "http://localhost:8080/register.html"
+					return;
+				},
+			})
+
+		}
+	</script>
+
+</html>
