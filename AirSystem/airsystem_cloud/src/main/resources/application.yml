@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: eureka-server
+
+server:
+  port: 8761
+
+
+zipkin:
+  base-url: http://localhost:9411
+
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false #是否将自己注册到eureka中
+    fetchRegistry: false #是否从eureka中拉取信息列表
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation : false
+
+
+
