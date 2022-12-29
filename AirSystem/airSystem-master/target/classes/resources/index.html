@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>机票订购系统</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--		<link href="css/bootstrap.min.css" rel="stylesheet">-->
+		<link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+		<style>
+			h2
+			{
+				text-align:center;
+			}
+			a{
+				text-decoration: none;
+				color:white;
+			}
+			a:hover{
+				color:white;
+			}
+			form
+			{
+				text-align:center;
+			}
+			input
+			{
+				width: 150px;
+			}
+			tbody
+			{
+				background: white;
+				opacity: 80%;
+			}
+			table th,tr{
+				text-align: center;
+				vertical-align: center;
+			}
+
+		</style>
+	</head>
+	<body background="img/2.jpg">
+
+		<h2>航班信息</h2>
+		<div>
+			<button role="presentation" class='btn-block btn btn-primary '><a href="#" onclick="planeInfo()">所有航班</a></button>
+			<button role="presentation" class='btn-block btn btn-primary '><a href="#" onclick="myplane()">我的机票</a></button>
+			<button role="presentation" class='btn-block btn btn-primary '><a href="http://localhost:8080/login.html">退出登录</a></button>
+		</div>
+
+
+		<div id="planeInfo">
+			<table class="table table-bordered table-hover" >
+				<thead class="table-dark">
+					<tr>
+						<th>航班号</th>
+						<th>航班名称</th>
+						<th>起始地点</th>
+						<th>目的地</th>
+						<th>价格</th>
+						<th>剩余票数</th>
+						<th>起飞时间</th>
+						<th>购票</th>
+					</tr>
+				</thead>
+				<tbody id="planeRoute">
+				</tbody>
+			</table>
+		</div>
+
+		<div id="myplane" style="display: none;">
+			<table  class="table table-bordered table-hover" >
+				<thead class="table-dark">
+					<tr>
+						<th>航班号</th>
+						<th>航班名称</th>
+						<th>起始地点</th>
+						<th>目的地</th>
+						<th>起飞时间</th>
+						<th>价格</th>
+						<th>购票时间</th>
+						<th>退票</th>
+						<th>改签</th>
+					</tr>
+				</thead>
+				<tbody id="myplanes">
+				</tbody>
+			</table>
+
+
+		</div>
+
+	</body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+
+	<script type="application/javascript">
+		$(function() {
+			//alert(1);
+			$.ajax({
+				async: false,
+				type: "POST",
+				url: "http://localhost:8080/plane/index",
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				//data:JSON.stringify(allData),
+				//实现json数组输出成表格
+				success: function(data) {
+					if (data.status == 1) {
+						var str;
+						$.each(data.result, function(i, n) {
+							str += "<tr>";
+							str += "<td id = " + n.id + ">" + n.id + "</td>";
+							str += "<td>" + n.planeName + "</td>";
+							str += "<td>" + n.first + "</td>";
+							str += "<td>" + n.destination + "</td>";
+							str += "<td>" + n.money + "</td>";
+							str += "<td>" + n.number + "</td>";
+							str += "<td>" + n.time + "</td>";
+							str += "<td><button type='button' class='btn-block btn btn-primary ' onclick='buy(" + n.id +
+								")'>购买</button></td>";
+							str += "</tr>";
+						})
+						$("#planeRoute").append(str);
+					} else {
+						alert(data.message);
+					}
+					return;
+				},
+				error: function(data) {
+					alert("请先登录");
+					window.location.href = "http://localhost:8080/login.html"
+					return;
+				},
+
+			})
+
+		})
+	</script>
+
+	<script type="text/javascript">
+		function buy(id) {
+
+			var allData = {
+				"planeId": id
+			};
+			$.ajax({
+				async: false,
+				type: "POST",
+				url: "http://localhost:8080/order/buyPlane",
+				data: JSON.stringify(allData),
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				success: function(data) {
+					if(data.status==2){
+						var ansswer = confirm(data.message);
+           				if(ansswer){
+                    	window.location.href = 'http://localhost:8080/order/waitPlane?planeid='+data.planeid;
+                    	alert("预定成功");
+                    	//window.location.href="http://localhost:8080/index.html";
+            		}
+					}else {
+						alert(data.message);
+						window.location.href = "http://localhost:8080/index.html";
+					
+					}
+					
+				},
+				error: function(data) {
+					alert("请登录！");
+					window.location.href = "http://localhost:8080/login.html";
+				},
+			})
+		}
+	</script>
+
+
+
+	<script type="application/javascript">
+		function planeInfo() {
+			$("#planeInfo").show();
+			$("#myplane").hide();
+		}
+
+		function myplane() {
+			$("#planeInfo").hide();
+			$("#myplane").show();
+			$("#myplanes tr:gt(0)").empty();
+			$("#myplanes tr").not(':eq(0)').empty()
+			
+			$.ajax({
+				async:false,
+				type:"POST",
+				url:"http://localhost:8080/order/lookMyPlanes",
+				dataType:"json",
+				success:function(data){
+					var str = "";
+					if(data.status == 0){
+						alert(data.message);
+						return;
+					}
+					$.each(data.result,function(i,n){
+						str+="<tr>";
+						str+="<td>"+n.planeId+"</td>";
+						str+="<td>"+n.plane.planeName+"</td>";
+						str+="<td>"+n.plane.first+"</td>";
+						str+="<td>"+n.plane.destination+"</td>";
+						str+="<td>"+n.plane.time+"</td>";
+						str+="<td>"+n.plane.money+"</td>";
+						str+="<td>"+n.time+"</td>";
+						str+="<td><button type='button' class='btn-block btn btn-primary ' onclick='back(" + n.id +
+								")'>退票</button></td>";
+						str+="<td><button type='button' class='btn-block btn btn-primary ' onclick='change(" + n.id +
+								")'>改签</button></td>";
+						str+="</tr>";
+					
+					});
+					
+					$("#myplanes").append(str);
+				},
+				error:function(data){
+					alert("请登录！");
+					window.location.href="http://localhost:8080/index.html";
+				},
+				
+			})
+			
+			
+		}
+	</script>
+	
+	
+	<script type="application/javascript">
+		function back(n){
+			$.ajax({
+				async: false,
+				type: "GET",
+				url: "http://localhost:8080/order/back?id="+n,
+				dataType: "json",
+				contentType: "application/json;charset=utf-8",
+				//data:JSON.stringify(allData),
+				success:function(data){
+					alert(data.message);
+					window.location.href="http://localhost:8080/index.html";
+					
+				},
+				errot:function(data){
+					alert("服务器繁忙，请稍后重试！")
+				}
+				
+			})
+		}
+		
+		function change(n){
+			sessionStorage.setItem("id",n);
+			window.location.href="http://localhost:8080/change.html";
+		}
+	</script>
+
+</html>
