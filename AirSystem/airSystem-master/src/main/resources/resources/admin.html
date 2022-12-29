@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>机票订购系统后台管理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+		<style>
+			h2
+			{
+				text-align:center;
+			}
+			a{
+				text-decoration: none;
+				color:white;
+			}
+			a:hover{
+				color:white;
+			}
+			form
+			{
+				text-align:center;
+			}
+			.btn{
+				width:100px;
+			}
+			input
+			{
+				width: 150px;
+			}
+			tbody
+			{
+				background: white;
+				opacity: 80%;
+			}
+			table th,tr{
+				text-align: center;
+				vertical-align: center;
+			}
+			.form-control
+			{
+				width:400px;
+			}
+			.unique
+			{
+				margin-left: 100px;
+			}
+			#insert{
+				margin-left: 400px;
+			/*	width:500px;*/
+			/*	height:600px;*/
+			/*	background-color:rgba(255,255,255,0.9);*/
+			}
+			/*.common{*/
+			/*	margin-left: 50px;*/
+			/*}*/
+			/*input{*/
+			/*	display:inline-block;*/
+			/*}*/
+		</style>
+	</head>
+	<body background="img/2.jpg">
+
+		<h2>航班信息</h2>
+		<div>
+			<button role="presentation" class='btn-block btn btn-primary '><a href="#" onclick="Allplane()">所有航班</a></button>
+			<button role="presentation" class='btn-block btn btn-primary '><a href="#" onclick="Newplane()">新增航班</a></button>
+			<button role="presentation" class='btn-block btn btn-primary '><a href="http://localhost:8080/login.html">退出登录</a></button>
+		</div>
+
+		<div id="planeInfo">
+			<table class="table table-bordered table-hover" >
+				<thead class="table-dark">
+				<tr>
+					<th>航班号</th>
+					<th>航班名称</th>
+					<th>起始地点</th>
+					<th>目的地</th>
+					<th>价格</th>
+					<th>剩余票数</th>
+					<th>起飞时间</th>
+					<th>删除</th>
+				</tr>
+				</thead>
+				<tbody id="planeRoute">
+				</tbody>
+			</table>
+		</div>
+			
+			
+<!--			<nav aria-label="Page navigation">-->
+<!--				<ul class="pagination" id="fenye">-->
+<!--					<li>-->
+<!--						<a href="#" aria-label="Previous">-->
+<!--							<span aria-hidden="true">&laquo;</span>-->
+<!--						</a>-->
+<!--					</li>-->
+<!--					<li><a href="#">1</a></li>-->
+<!--					<li><a href="#">2</a></li>-->
+<!--					<li><a href="#">3</a></li>-->
+<!--					<li><a href="#">4</a></li>-->
+<!--					<li><a href="#">5</a></li>-->
+<!--					<li>-->
+<!--						<a href="#" aria-label="Next">-->
+<!--							<span aria-hidden="true">&raquo;</span>-->
+<!--						</a>-->
+<!--					</li>-->
+<!--				</ul>-->
+<!--			</nav>-->
+			
+			
+		</div>
+		<div id="insert" style="display: none;">
+				<div class="common">
+<!--				航班名称:<input type="text" class="form-control" placeholder="planeName" aria-describedby="sizing-addon2" id="planeName">-->
+					<label for="planeName" class="col-sm-2 control-label">航班名称</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="planeName" placeholder="planeName"><br>
+					</div>
+				</div>
+
+				<div class="common">
+<!--					起飞时间:<input type="datetime" class="form-control" placeholder="HH:MM" aria-describedby="sizing-addon2" id="time">-->
+					<label for="time" class="col-sm-2 control-label">起飞时间</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="time" placeholder="HH:MM"><br>
+					</div>
+				</div>
+
+				<div class="common">
+<!--					起始地点:<input type="text" class="form-control" placeholder="first" aria-describedby="sizing-addon2" id = "first">-->
+					<label for="first" class="col-sm-2 control-label">起始地点</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="first" placeholder="first"><br>
+					</div>
+				</div>
+				<div class="common">
+<!--					目的地:<input type="text" class="form-control" placeholder="destination" aria-describedby="sizing-addon2" id="destination">-->
+					<label for="destination" class="col-sm-2 control-label">目的地</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="destination" placeholder="destination"><br>
+					</div>
+				</div>
+
+				<div class="common">
+<!--					票价:<input type="text" class="form-control" placeholder="money" aria-describedby="sizing-addon2" id="money">-->
+					<label for="money" class="col-sm-2 control-label">票价</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="money" placeholder="money"><br>
+					</div>
+				</div>
+
+				<div class="common">
+<!--					票数:<input type="text" class="form-control" placeholder="number" aria-describedby="sizing-addon2" id="number">-->
+					<label for="number" class="col-sm-2 control-label">票数</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="number" placeholder="number"><br>
+					</div>
+				</div>
+
+				<div class="col-md-offset-1">
+					<button type="button" class="layui-btn layui-btn-radius layui-btn-normal btn-block btn btn-primary unique" onclick="insert()">新增航班</button>
+				</div>
+				
+		</div>
+
+
+	</body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		function page() {
+			var i = 1;
+
+			var assort = $("#fenye li");
+			assort.click(function() {
+						var classfiyText = $(this).find("a").eq(0).text();
+						alert(classfiyText);
+			});
+		}
+		
+		function Newplane(){
+				$("#planeInfo").hide();
+				$("#insert").show();
+		}
+			
+		function Allplane(){
+				$("#insert").hide();
+				$("#planeInfo").show();
+		}
+	</script>
+
+<script type="application/javascript">
+	function insert(){
+		var planeName = $("#planeName").val();
+		var time = $("#time").val();
+		var first = $("#first").val();
+		var destination = $("#destination").val();
+		var money = $("#money").val();
+		var number = $("#number").val();
+		
+		if(planeName == ""){
+			alert("飞机名不能为空");
+			return;
+		}
+		if(time == ""){
+			alert("起飞时间不能为空");
+			return;
+		}
+		if(first == ""){
+			alert("起始地点不能为空");
+			return;
+		}
+		if(destination == ""){
+			alert("目的地不能为空");
+			return;
+		}
+		
+		if(number>40){
+			alert("最多只能有40张票");
+			return;
+		}
+		if(number == ""){
+			number = 40;
+		}
+		if(money == ""){
+			alert("票价不能为空");
+			return ;
+		}
+		
+		var allData = {
+					"planeName":planeName,
+					"time":time,
+					"first":first,
+					"destination":destination,
+					"money":money,
+					"number":number,	
+			}
+			
+			$.ajax({
+				async: false,
+				type:"POST",
+				url: "http://localhost:8080/admin/insertPlane",
+				dataType:"json",
+				contentType:"application/json;charset=utf-8",
+				data:JSON.stringify(allData),
+				success:function(data){
+					alert(data.message);
+					if(data.status == 1){
+						//alert("新加了航班号为"+data.id+"的飞机！");
+						window.location.href = "http://localhost:8080/admin.html";
+					}else{
+						window.location.href = "http://localhost:8080/login.html";
+					}
+					
+					return;
+				},
+				error: function(data) {
+					alert("请登录！");
+					return;
+				},
+			})
+	}
+	
+</script>
+
+<script type="application/javascript">
+	function deletePlane(n){
+	
+		$.ajax({
+			async: false,
+			type:"GET",
+			url: "http://localhost:8080/admin/deletePlane?planeId="+n,
+			dataType:"json",
+			contentType:"application/json;charset=utf-8",
+			success:function(data){
+				alert(data.message);
+				if(data.status == 1){
+					window.location.href = "http://localhost:8080/admin.html";
+				}else{
+					window.location.href = "http://localhost:8080/login.html";
+				}
+				
+				return;
+			},
+			error: function(data) {
+				alert("请登录！");
+				return;
+			},
+		})
+	}
+	
+</script>
+
+
+	<script type="application/javascript">
+		$(function() {
+
+		$.ajax({
+			async: false,
+			type: "POST",
+			url: "http://localhost:8080/plane/index",
+			dataType: "json",
+			contentType: "application/json;charset=utf-8",
+			//data:JSON.stringify(allData),
+			//实现json数组输出成表格
+			success: function(data) {
+				if (data.status == 1) {
+					var str;
+					$.each(data.result, function(i, n) {
+						str += "<tr>";
+						str += "<td id = " + n.id + ">" + n.id + "</td>";
+						str += "<td>" + n.planeName + "</td>";
+						str += "<td>" + n.first + "</td>";
+						str += "<td>" + n.destination + "</td>";
+						str += "<td>" + n.money + "</td>";
+						str += "<td>" + n.number + "</td>";
+						str += "<td>" + n.time + "</td>";
+						str += "<td><button type='button' class='btn-block btn btn-primary ' onclick='deletePlane(" + n.id +
+							")'>删除</button></td>";
+						str += "</tr>";
+					})
+					$("#planeRoute").append(str);
+				} else {
+					alert(data.message);
+				}
+				return;
+			},
+			error: function(data) {
+				alert("请先登录");
+				window.location.href = "http://localhost:8080/login.html"
+				return;
+			},
+
+		})
+
+	})
+	</script>
+
+
+
+</html>
