@@ -16,13 +16,12 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/login")
+	@RequestMapping("/validateUser")
 	@ResponseBody
 	public Result validateUser(@RequestBody User user,HttpServletRequest request){
 		JSONObject json = new JSONObject();
@@ -42,18 +41,7 @@ public class UserController {
 //			json.put("admin", 1);
 			re.setCode(2);
 		}
-//		return json;
 		// 将获得的数据经过逻辑验证返回给界面微服务的控制层
 		return re;
 	}
-	
-//	@PostMapping("/register")
-//	@ResponseBody
-//	public JSONObject register(@RequestBody User user){
-//		JSONObject json = new JSONObject();
-//		String result = userService.insertUser(user);
-//		json.put("message", result);
-//		return json;
-//	}
-//
 }
